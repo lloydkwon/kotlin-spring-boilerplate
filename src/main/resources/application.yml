@@ -1,0 +1,44 @@
+spring:
+  profiles:
+    active: local
+  output:
+    ansi:
+      enabled: always
+  datasource:
+    url: jdbc:postgresql://localhost:5432/adyo
+    username: hide
+    password: hide
+    platform: postgres
+    writer:
+      jdbc-url: jdbc:postgresql://localhost:5432/adyo
+      username: hide
+      password: hide
+      platform: postgres
+    reader:
+      jdbc-url: jdbc:postgresql://localhost:5432/adyo
+      username: hide
+      password: hide
+      platform: postgres
+  servlet:
+    multipart:
+      max-file-size: 4024KB
+      max-request-size: 4024KB
+  jpa:
+    open-in-view: false
+    hibernate:
+      ddl-auto: create
+    properties:
+      hibernate:
+        format_sql: true
+        default_batch_fetch_size: 100
+        jdbc:
+          batch_size: 100
+        order_inserts: true
+        order_updates: true
+  redis:
+    host: localhost
+    port: 6379
+
+logging:
+  level:
+    org.hibernate.SQL: debug
