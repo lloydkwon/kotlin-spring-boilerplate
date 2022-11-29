@@ -44,5 +44,5 @@ logging:
     org.hibernate.SQL: debug
 
 jwt:
-  secret-key: secret
+  secret-key: AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
   algorithm: HS256

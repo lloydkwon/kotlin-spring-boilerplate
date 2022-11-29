@@ -15,9 +15,10 @@ class JwtTokenUtil(
     private val algorithm: String,
 ) {
     private fun getClaims(token: String): Claims {
-        return Jwts.parser()
-            .setSigningKey(secretKey)
-            .parseClaimsJwt(token)
+        return Jwts.parserBuilder()
+            .setSigningKey(secretKey.toByteArray())
+            .build()
+            .parseClaimsJws(token)
             .body
     }
 
@@ -29,7 +30,7 @@ class JwtTokenUtil(
         try {
             val claims = getClaims(token)
             return TokenPayload(
-                userId = claims["user_id"].toString()
+                userId = claims["user_id"].toString().toLong()
             )
         } catch (e: Exception) {
             throw JwtTokenDecodeException()
