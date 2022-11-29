@@ -10,6 +10,6 @@ class CreateUserService(
     userRepository: UserRepository,
 ) : CreateUserUseCase {
     override fun execute(command: CreateUserCommand) {
-        TODO("Not yet implemented")
+
     }
 }
