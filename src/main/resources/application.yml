@@ -42,3 +42,7 @@ spring:
 logging:
   level:
     org.hibernate.SQL: debug
+
+jwt:
+  secret-key: secret
+  algorithm: HS256
