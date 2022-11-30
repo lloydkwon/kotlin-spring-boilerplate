@@ -1,8 +1,8 @@
 package boilerplate.sample.core.exception
 
-import org.springframework.http.HttpStatusCode
+import org.springframework.http.HttpStatus
 
 open class CustomException(
-    open val statusCode: HttpStatusCode,
+    open val statusCode: HttpStatus,
     open val error: String,
 ) : RuntimeException()
