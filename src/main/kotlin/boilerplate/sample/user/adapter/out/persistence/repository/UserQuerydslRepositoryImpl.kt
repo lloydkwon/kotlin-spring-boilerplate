@@ -1,4 +1,8 @@
 package boilerplate.sample.user.adapter.out.persistence.repository
 
-class UserQuerydslRepositoryImpl : UserQuerydslRepository {
+import com.querydsl.jpa.impl.JPAQueryFactory
+
+class UserQuerydslRepositoryImpl(
+    private val queryFactory: JPAQueryFactory,
+) : UserQuerydslRepository {
 }
