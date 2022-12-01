@@ -5,10 +5,6 @@ spring:
     ansi:
       enabled: always
   datasource:
-    url: jdbc:postgresql://localhost:5432/kotlin
-    username: hide
-    password: hide
-    platform: postgres
     writer:
       jdbc-url: jdbc:postgresql://localhost:5432/kotlin
       username: hide
