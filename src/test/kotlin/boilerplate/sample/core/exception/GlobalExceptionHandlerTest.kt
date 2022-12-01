@@ -6,9 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc
 import org.springframework.boot.test.context.SpringBootTest
 import org.springframework.test.web.servlet.MockMvc
-import org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get
-import org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath
-import org.springframework.test.web.servlet.result.MockMvcResultMatchers.status
+import org.springframework.test.web.servlet.get
 import org.springframework.web.bind.annotation.GetMapping
 import org.springframework.web.bind.annotation.RestController
 
@@ -26,12 +24,13 @@ class TestController {
 class GlobalExceptionHandlerTest(
     @Autowired private val mockMvc: MockMvc,
 ) : ExpectSpec({
-
     context("GlobalExceptionHandler") {
         expect("Business 예외가 발생한다") {
-            mockMvc.perform(get("/test"))
-                .andExpect(status().isUnauthorized)
-                .andExpect(jsonPath("error").value("AUTH__ERROR"))
+            mockMvc.get("/test")
+                .andExpect {
+                    status { isUnauthorized() }
+                    jsonPath("error") { "AUTH__ERROR" }
+                }
         }
     }
 })

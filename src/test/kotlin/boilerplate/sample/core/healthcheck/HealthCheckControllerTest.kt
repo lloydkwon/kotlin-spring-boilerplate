@@ -5,8 +5,7 @@ import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc
 import org.springframework.boot.test.context.SpringBootTest
 import org.springframework.test.web.servlet.MockMvc
-import org.springframework.test.web.servlet.request.MockMvcRequestBuilders
-import org.springframework.test.web.servlet.result.MockMvcResultMatchers
+import org.springframework.test.web.servlet.get
 
 @SpringBootTest
 @AutoConfigureMockMvc
@@ -16,8 +15,8 @@ class HealthCheckControllerTest(
 
     context("HealthCheckController") {
         expect("헬스체크 요청이 정상 동작한다") {
-            mockMvc.perform(MockMvcRequestBuilders.get("/health_check"))
-                .andExpect(MockMvcResultMatchers.status().isOk)
+            mockMvc.get("/health_check")
+                .andExpect { status { isOk() } }
         }
     }
 })

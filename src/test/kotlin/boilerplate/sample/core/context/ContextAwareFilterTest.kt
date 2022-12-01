@@ -2,6 +2,7 @@ package boilerplate.sample.core.context
 
 import io.kotest.core.spec.style.BehaviorSpec
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest
+import org.springframework.test.web.servlet.get
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers.content
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers.status
@@ -29,9 +30,13 @@ class ContextAwareFilterTest : BehaviorSpec({
 
         `when`("X-Correlation-Id 헤더에 값을 넣어서 요청하면") {
             then("정상적으로 적용된다") {
-                mockMvc.perform(get("/test").header("X-Correlation-Id", "Test"))
-                    .andExpect(status().isOk)
-                    .andExpect(content().string("Test"))
+                mockMvc.get("/test") {
+                    header(name = "X-Correlation-Id", "Test")
+                }
+                    .andExpect {
+                        status { isOk() }
+                        content { string("Test") }
+                    }
             }
         }
     }
