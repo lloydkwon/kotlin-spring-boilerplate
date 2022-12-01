@@ -20,10 +20,14 @@ class TokenAuthInterceptor(
         if (handler !is HandlerMethod) {
             return true
         }
-        val token = extraceTokenFromRequest(request)
-        jwtTokenUtil.decode(token)
 
-        return super.preHandle(request, response, handler)
+        val token = extraceTokenFromRequest(request)
+        try {
+            jwtTokenUtil.decode(token)
+        } catch (e: Exception) {
+            throw AuthenticationException()
+        }
+        return true
     }
 
     private fun extraceTokenFromRequest(request: HttpServletRequest): String {

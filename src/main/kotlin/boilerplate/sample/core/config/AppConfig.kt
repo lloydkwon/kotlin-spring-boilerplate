@@ -10,6 +10,5 @@ class AppConfig(
     private val tokenAuthInterceptor: TokenAuthInterceptor,
 ) : WebMvcConfigurer {
     override fun addInterceptors(registry: InterceptorRegistry) {
-        registry.addInterceptor(tokenAuthInterceptor).addPathPatterns("/api/v1/users")
     }
 }
