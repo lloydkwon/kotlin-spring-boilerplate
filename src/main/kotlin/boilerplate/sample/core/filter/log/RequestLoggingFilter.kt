@@ -19,7 +19,7 @@ private val logger = KotlinLogging.logger {}
 @Component
 class RequestLoggingFilter : OncePerRequestFilter() {
     companion object {
-        private fun getRequestBody(request: ContentCachingRequestWrapper): String {
+        fun getRequestBody(request: ContentCachingRequestWrapper): String {
             val inputStream = ByteArrayInputStream(request.contentAsByteArray)
 
             return try {
@@ -29,8 +29,9 @@ class RequestLoggingFilter : OncePerRequestFilter() {
             }
         }
 
-        private fun getResponseBody(response: ContentCachingResponseWrapper): String {
+        fun getResponseBody(response: ContentCachingResponseWrapper): String {
             val inputStream = response.contentInputStream
+
             return try {
                 val responseBody = StreamUtils.copyToString(inputStream, StandardCharsets.UTF_8)
                 response.copyBodyToResponse()
