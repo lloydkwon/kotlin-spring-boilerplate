@@ -1,5 +1,6 @@
 package boilerplate.sample.core.config
 
+import mu.KotlinLogging
 import org.springframework.beans.factory.annotation.Value
 import org.springframework.cache.CacheManager
 import org.springframework.context.annotation.Bean
@@ -13,6 +14,9 @@ import org.springframework.data.redis.serializer.GenericJackson2JsonRedisSeriali
 import org.springframework.data.redis.serializer.RedisSerializationContext
 import org.springframework.data.redis.serializer.StringRedisSerializer
 import java.time.Duration
+
+private val logger = KotlinLogging.logger {}
+
 
 @Configuration
 class RedisConfig(
@@ -32,6 +36,7 @@ class RedisConfig(
     fun redisCacheManager(
         redisConnectionFactory: RedisConnectionFactory,
     ): CacheManager {
+        logger.info { "Initialize redisCacheManager" }
         val redisCacheConfiguration = RedisCacheConfiguration.defaultCacheConfig()
             .serializeKeysWith(
                 RedisSerializationContext.SerializationPair.fromSerializer(StringRedisSerializer())

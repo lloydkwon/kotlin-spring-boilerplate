@@ -34,6 +34,8 @@ dependencies {
 	implementation("org.jetbrains.kotlin:kotlin-stdlib-jdk8")
 	implementation("com.querydsl:querydsl-jpa:5.0.0:jakarta")
 	implementation("io.jsonwebtoken:jjwt-api:0.11.2")
+	implementation("org.slf4j:slf4j-api:2.0.5")
+	implementation("io.github.microutils:kotlin-logging-jvm:3.0.2")
 
 	kapt("jakarta.persistence:jakarta.persistence-api")
 	kapt("jakarta.annotation:jakarta.annotation-api")
