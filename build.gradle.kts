@@ -49,7 +49,7 @@ dependencies {
 	testImplementation("io.kotest:kotest-assertions-core:5.3.2")
 	testImplementation("io.kotest.extensions:kotest-extensions-spring:1.1.2")
 	testImplementation("io.mockk:mockk:1.13.3")
-	testImplementation("com.ninja-squad:springmockk:3.1.2")
+	testImplementation("com.ninja-squad:springmockk:4.0.0")
 }
 
 tasks.withType<KotlinCompile> {
@@ -61,4 +61,5 @@ tasks.withType<KotlinCompile> {
 
 tasks.withType<Test> {
 	useJUnitPlatform()
+	jvmArgs("--add-opens", "java.base/java.lang.reflect=ALL-UNNAMED")
 }
