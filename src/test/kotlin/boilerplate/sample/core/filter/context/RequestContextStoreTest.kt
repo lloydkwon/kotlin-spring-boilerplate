@@ -1,5 +1,7 @@
-package boilerplate.sample.core.context
+package boilerplate.sample.core.filter.context
 
+import boilerplate.sample.core.filter.context.RequestContext
+import boilerplate.sample.core.filter.context.RequestContextStore
 import io.kotest.core.spec.style.BehaviorSpec
 import io.kotest.matchers.shouldBe
 import io.kotest.matchers.shouldNotBe

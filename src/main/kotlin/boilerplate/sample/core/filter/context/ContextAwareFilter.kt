@@ -1,4 +1,4 @@
-package boilerplate.sample.core.context
+package boilerplate.sample.core.filter.context
 
 import jakarta.servlet.Filter
 import jakarta.servlet.FilterChain

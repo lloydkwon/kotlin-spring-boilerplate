@@ -1,5 +1,7 @@
-package boilerplate.sample.core.context
+package boilerplate.sample.core.filter.context
 
+import boilerplate.sample.core.filter.context.ContextAwareFilter
+import boilerplate.sample.core.filter.context.RequestContextStore
 import io.kotest.core.spec.style.BehaviorSpec
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest
 import org.springframework.test.web.servlet.get
