@@ -6,12 +6,12 @@ spring:
       enabled: always
   datasource:
     writer:
-      jdbc-url: jdbc:postgresql://localhost:5432/kotlin
+      jdbc-url: jdbc:postgresql://localhost:5432/test
       username: hide
       password: hide
       platform: postgres
     reader:
-      jdbc-url: jdbc:postgresql://localhost:5432/kotlin
+      jdbc-url: jdbc:postgresql://localhost:5432/test
       username: hide
       password: hide
       platform: postgres
