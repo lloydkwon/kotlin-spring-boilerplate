@@ -7,6 +7,7 @@ import boilerplate.sample.user.domain.command.CreateUserCommand
 import boilerplate.sample.user.domain.command.GetUserCommand
 import boilerplate.sample.user.domain.model.User
 import com.fasterxml.jackson.databind.ObjectMapper
+import com.fasterxml.jackson.module.kotlin.registerKotlinModule
 import com.ninjasquad.springmockk.MockkBean
 import io.kotest.core.spec.style.ExpectSpec
 import io.mockk.every
@@ -15,12 +16,12 @@ import org.junit.jupiter.api.extension.ExtendWith
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc
 import org.springframework.boot.test.context.SpringBootTest
+import org.springframework.http.MediaType
 import org.springframework.restdocs.RestDocumentationExtension
 import org.springframework.restdocs.mockmvc.MockMvcRestDocumentation.document
 import org.springframework.test.web.servlet.MockMvc
 import org.springframework.test.web.servlet.get
 import org.springframework.test.web.servlet.post
-import org.springframework.test.web.servlet.result.MockMvcResultMatchers.content
 
 @ExtendWith(RestDocumentationExtension::class, MockKExtension::class)
 @SpringBootTest
@@ -29,8 +30,8 @@ class UserV1ControllerTest(
     @Autowired private val mockMvc: MockMvc,
     @MockkBean private var getUserService: GetUserService,
     @MockkBean private var createUserService: CreateUserService,
-    @MockkBean private var objectMapper: ObjectMapper,
 ) : ExpectSpec({
+    val objectMapper = ObjectMapper().registerKotlinModule()
 
     fun makeGetUserCommand(): GetUserCommand {
         return GetUserCommand(userId = 1L)
@@ -65,7 +66,31 @@ class UserV1ControllerTest(
                 }
                 .andDo { print() }
                 .andDo {
-                    document("/api/v1/users/{userId}")
+                    document("GET /api/v1/users/{userId}")
+                }
+        }
+    }
+
+    context("유저 생성 API") {
+        expect("유저 생성에 성공하면 생성한 유저의 정보를 응답으로 내려보낸다") {
+            val command = makeCreateUserCommand()
+            val user = makeUser()
+            val request = makeCreateUserRequest()
+            println(objectMapper.writeValueAsString(request))
+
+            every { createUserService.execute(command) } answers { user }
+            mockMvc.post("/api/v1/users") {
+                content = objectMapper.writeValueAsString(request)
+                contentType = MediaType.APPLICATION_JSON
+            }
+                .andExpect {
+                    status { isOk() }
+                    jsonPath("id") { "1" }
+                    jsonPath("name") { "test" }
+                }
+                .andDo { print() }
+                .andDo {
+                    document("POST /api/v1/users")
                 }
         }
     }
