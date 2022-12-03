@@ -52,6 +52,7 @@ dependencies {
 	testImplementation("io.kotest.extensions:kotest-extensions-spring:1.1.2")
 	testImplementation("io.mockk:mockk:1.13.3")
 	testImplementation("com.ninja-squad:springmockk:4.0.0")
+	testImplementation("org.springframework.restdocs:spring-restdocs-mockmvc")
 }
 
 tasks.withType<KotlinCompile> {

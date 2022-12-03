@@ -17,7 +17,7 @@ class CreateUserService(
 
     @Transactional
     override fun execute(command: CreateUserCommand): User {
-        userRepository.findByName(command.name) ?.let { throw DuplicateNameException() }
+        userRepository.findByName(command.name)?.let { throw DuplicateNameException() }
         val user = UserEntity(name = command.name, password = command.password)
         return UserConverter.from(user)
     }
