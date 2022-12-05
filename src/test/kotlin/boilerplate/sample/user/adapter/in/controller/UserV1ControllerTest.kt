@@ -7,7 +7,6 @@ import boilerplate.sample.user.application.service.CreateUserService
 import boilerplate.sample.user.application.service.GetUserService
 import boilerplate.sample.user.domain.command.CreateUserCommand
 import boilerplate.sample.user.domain.command.GetUserCommand
-import boilerplate.sample.user.domain.model.User
 import com.ninjasquad.springmockk.MockkBean
 import io.mockk.every
 import org.junit.jupiter.api.Test
@@ -24,39 +23,11 @@ class UserV1ControllerTest : RestControllerTest() {
     @MockkBean
     private lateinit var createUserService: CreateUserService
 
-    fun makeGetUserCommand(): GetUserCommand {
-        return GetUserCommand(userId = 1L)
-    }
-
-    fun makeUser(): User {
-        return User(id = 1L, name = "test", password = "1234")
-    }
-
-    fun makeCreateUserRequest(): CreateUserRequest {
-        return CreateUserRequest(
-            name = "test",
-            password = "123",
-        )
-    }
-
-    fun makeCreateUserCommand(): CreateUserCommand {
-        return CreateUserCommand(name = "test", password = "123")
-    }
-
-    fun makeGetUserResponse(id: Long?, name: String): GetUserResponse {
-        return GetUserResponse(id = id, name = name)
-    }
-
-    fun makeCreateUserResponse(id: Long?, name: String): CreateUserResponse {
-        return CreateUserResponse(id = id, name = name)
-    }
-
-
     @Test
     fun `유저를 조회한다`() {
-        val command = makeGetUserCommand()
-        val user = makeUser()
-        val response = makeGetUserResponse(user.id, user.name)
+        val command = GetUserCommand(userId = 1L)
+        val user = makeUser(id = 1L, name = "test", password = "123")
+        val response = GetUserResponse(id = user.id, name = user.name)
         every { getUserService.execute(command) } answers { user }
 
         mockMvc.get("/api/v1/users/1")
@@ -71,10 +42,10 @@ class UserV1ControllerTest : RestControllerTest() {
 
     @Test
     fun `유저를 생성한다`() {
-        val command = makeCreateUserCommand()
-        val user = makeUser()
-        val request = makeCreateUserRequest()
-        val response = makeCreateUserResponse(user.id, user.name)
+        val command = CreateUserCommand(name = "test", password = "123")
+        val user = makeUser(id = 1L, name = command.name, password = command.password)
+        val request = CreateUserRequest(name = user.name, password = user.password)
+        val response = CreateUserResponse(id = user.id, name = user.name)
 
         every { createUserService.execute(command) } answers { user }
         mockMvc.post("/api/v1/users") {
