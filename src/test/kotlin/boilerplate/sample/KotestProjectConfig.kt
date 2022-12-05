@@ -1,4 +1,4 @@
-package boilerplate
+package boilerplate.sample
 
 import io.kotest.core.config.AbstractProjectConfig
 import io.kotest.core.extensions.Extension
