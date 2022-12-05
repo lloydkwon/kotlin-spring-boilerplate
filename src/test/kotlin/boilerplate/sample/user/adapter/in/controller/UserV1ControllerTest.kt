@@ -1,6 +1,9 @@
 package boilerplate.sample.user.adapter.`in`.controller
 
+import boilerplate.sample.core.util.JwtTokenUtil
 import boilerplate.sample.user.adapter.`in`.controller.request.CreateUserRequest
+import boilerplate.sample.user.adapter.`in`.controller.response.CreateUserResponse
+import boilerplate.sample.user.adapter.`in`.controller.response.GetUserResponse
 import boilerplate.sample.user.application.service.CreateUserService
 import boilerplate.sample.user.application.service.GetUserService
 import boilerplate.sample.user.domain.command.CreateUserCommand
@@ -11,11 +14,11 @@ import com.fasterxml.jackson.module.kotlin.registerKotlinModule
 import com.ninjasquad.springmockk.MockkBean
 import io.kotest.core.spec.style.ExpectSpec
 import io.mockk.every
-import io.mockk.junit5.MockKExtension
 import org.junit.jupiter.api.extension.ExtendWith
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc
-import org.springframework.boot.test.context.SpringBootTest
+import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest
+import org.springframework.data.jpa.mapping.JpaMetamodelMappingContext
 import org.springframework.http.MediaType
 import org.springframework.restdocs.RestDocumentationExtension
 import org.springframework.restdocs.mockmvc.MockMvcRestDocumentation.document
@@ -23,13 +26,14 @@ import org.springframework.test.web.servlet.MockMvc
 import org.springframework.test.web.servlet.get
 import org.springframework.test.web.servlet.post
 
-@ExtendWith(RestDocumentationExtension::class, MockKExtension::class)
-@SpringBootTest
-@AutoConfigureMockMvc
+@ExtendWith(RestDocumentationExtension::class)
+@WebMvcTest(UserV1Controller::class)
 class UserV1ControllerTest(
     @Autowired private val mockMvc: MockMvc,
     @MockkBean private var getUserService: GetUserService,
     @MockkBean private var createUserService: CreateUserService,
+    @MockkBean private var jpaMetamodelMappingContext: JpaMetamodelMappingContext,
+    @MockkBean private var jwtTokenUtil: JwtTokenUtil,
 ) : ExpectSpec({
     val objectMapper = ObjectMapper().registerKotlinModule()
 
@@ -52,20 +56,28 @@ class UserV1ControllerTest(
         return CreateUserCommand(name = "test", password = "123")
     }
 
+    fun makeGetUserResponse(id: Long?, name: String): GetUserResponse {
+        return GetUserResponse(id = id, name = name)
+    }
+
+    fun makeCreateUserResponse(id: Long?, name: String): CreateUserResponse {
+        return CreateUserResponse(id = id, name = name)
+    }
+
     context("유저 조회 API") {
         expect("유저가 있는 경우 유저 정보를 응답으로 내려보낸다") {
             val command = makeGetUserCommand()
             val user = makeUser()
+            val response = makeGetUserResponse(user.id, user.name)
 
             every { getUserService.execute(command) } answers { user }
             mockMvc.get("/api/v1/users/1")
                 .andExpect {
                     status { isOk() }
-                    jsonPath("id") { "1" }
-                    jsonPath("name") { "test" }
+                    content { string(objectMapper.writeValueAsString(response)) }
                 }
-                .andDo { print() }
                 .andDo {
+                    print()
                     document("GET /api/v1/users/{userId}")
                 }
         }
@@ -76,7 +88,7 @@ class UserV1ControllerTest(
             val command = makeCreateUserCommand()
             val user = makeUser()
             val request = makeCreateUserRequest()
-            println(objectMapper.writeValueAsString(request))
+            val response = makeCreateUserResponse(user.id, user.name)
 
             every { createUserService.execute(command) } answers { user }
             mockMvc.post("/api/v1/users") {
@@ -85,11 +97,10 @@ class UserV1ControllerTest(
             }
                 .andExpect {
                     status { isOk() }
-                    jsonPath("id") { "1" }
-                    jsonPath("name") { "test" }
+                    content { string(objectMapper.writeValueAsString(response)) }
                 }
-                .andDo { print() }
                 .andDo {
+                    print()
                     document("POST /api/v1/users")
                 }
         }
