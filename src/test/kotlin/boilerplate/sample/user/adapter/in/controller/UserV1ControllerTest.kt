@@ -29,10 +29,10 @@ import org.springframework.test.web.servlet.post
 @WebMvcTest(UserV1Controller::class)
 class UserV1ControllerTest(
     @Autowired private val mockMvc: MockMvc,
-    @MockkBean private var getUserService: GetUserService,
-    @MockkBean private var createUserService: CreateUserService,
-    @MockkBean private var jpaMetamodelMappingContext: JpaMetamodelMappingContext,
-    @MockkBean private var jwtTokenUtil: JwtTokenUtil,
+    @MockkBean private val getUserService: GetUserService,
+    @MockkBean private val createUserService: CreateUserService,
+    @MockkBean private val jpaMetamodelMappingContext: JpaMetamodelMappingContext,
+    @MockkBean private val jwtTokenUtil: JwtTokenUtil,
 ) : ExpectSpec({
     val objectMapper = ObjectMapper().registerKotlinModule()
 

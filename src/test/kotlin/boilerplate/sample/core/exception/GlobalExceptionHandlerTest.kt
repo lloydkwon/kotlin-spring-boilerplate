@@ -27,8 +27,8 @@ class TestController {
 @WebMvcTest(TestController::class)
 class GlobalExceptionHandlerTest(
     @Autowired private val mockMvc: MockMvc,
-    @MockkBean private var jpaMetamodelMappingContext: JpaMetamodelMappingContext,
-    @MockkBean private var jwtTokenUtil: JwtTokenUtil,
+    @MockkBean private val jpaMetamodelMappingContext: JpaMetamodelMappingContext,
+    @MockkBean private val jwtTokenUtil: JwtTokenUtil,
 ) : ExpectSpec({
     context("GlobalExceptionHandler") {
         expect("Business 예외가 발생한다") {

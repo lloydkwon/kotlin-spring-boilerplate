@@ -15,8 +15,8 @@ import org.springframework.test.web.servlet.get
 @WebMvcTest(HealthCheckController::class)
 class HealthCheckControllerTest(
     @Autowired private val mockMvc: MockMvc,
-    @MockkBean private var jpaMetamodelMappingContext: JpaMetamodelMappingContext,
-    @MockkBean private var jwtTokenUtil: JwtTokenUtil,
+    @MockkBean private val jpaMetamodelMappingContext: JpaMetamodelMappingContext,
+    @MockkBean private val jwtTokenUtil: JwtTokenUtil,
 ) : ExpectSpec({
 
     context("HealthCheckController") {
