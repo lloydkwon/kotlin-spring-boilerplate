@@ -1,8 +1,10 @@
 package boilerplate.sample.post.adapter.out.persistence.entity
 
 import boilerplate.sample.core.entity.BaseTimestampEntity
-import boilerplate.sample.user.adapter.out.persistence.entity.UserEntity
-import jakarta.persistence.*
+import jakarta.persistence.Column
+import jakarta.persistence.Entity
+import jakarta.persistence.GeneratedValue
+import jakarta.persistence.Id
 
 @Entity
 class PostEntity(
@@ -12,9 +14,8 @@ class PostEntity(
     @Column(name = "body", nullable = false)
     val body: String,
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "user_id", foreignKey = ForeignKey(ConstraintMode.NO_CONSTRAINT))
-    val user: UserEntity,
+    @Column(name = "user_id", nullable = false)
+    val userId: Long,
 
     @Id
     @GeneratedValue
