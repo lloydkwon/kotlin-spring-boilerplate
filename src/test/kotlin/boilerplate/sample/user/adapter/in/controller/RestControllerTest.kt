@@ -16,6 +16,7 @@ import org.springframework.restdocs.mockmvc.MockMvcRestDocumentation
 import org.springframework.restdocs.operation.preprocess.Preprocessors.prettyPrint
 import org.springframework.test.web.servlet.MockHttpServletRequestDsl
 import org.springframework.test.web.servlet.MockMvc
+import org.springframework.test.web.servlet.MockMvcResultMatchersDsl
 import org.springframework.test.web.servlet.result.MockMvcResultHandlers
 import org.springframework.test.web.servlet.setup.DefaultMockMvcBuilder
 import org.springframework.test.web.servlet.setup.MockMvcBuilders
@@ -57,8 +58,12 @@ abstract class RestControllerTest {
             .build()
     }
 
-    fun MockHttpServletRequestDsl.jsonContent(value: Any) {
+    fun MockHttpServletRequestDsl.jsonRequest(value: Any) {
         content = objectMapper.writeValueAsString(value)
         contentType = MediaType.APPLICATION_JSON
+    }
+
+    fun MockMvcResultMatchersDsl.jsonResponse(value: Any) {
+        content { objectMapper.writeValueAsString(value) }
     }
 }

@@ -33,7 +33,7 @@ class UserV1ControllerTest : RestControllerTest() {
         mockMvc.get("/api/v1/users/1")
             .andExpect {
                 status { isOk() }
-                content { string(objectMapper.writeValueAsString(response)) }
+                jsonResponse(response)
             }
             .andDo {
                 handle(document("GET /api/v1/users/{userId}"))
@@ -49,11 +49,11 @@ class UserV1ControllerTest : RestControllerTest() {
 
         every { createUserService.execute(command) } answers { user }
         mockMvc.post("/api/v1/users") {
-            jsonContent(request)
+            jsonRequest(request)
         }
             .andExpect {
                 status { isOk() }
-                content { (objectMapper.writeValueAsString(response)) }
+                jsonResponse(response)
             }
             .andDo {
                 handle(document("POST /api/v1/users"))
