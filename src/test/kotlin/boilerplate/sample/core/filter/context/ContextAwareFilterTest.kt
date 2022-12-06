@@ -2,24 +2,31 @@ package boilerplate.sample.core.filter.context
 
 import boilerplate.sample.core.filter.context.ContextAwareFilter
 import boilerplate.sample.core.filter.context.RequestContextStore
+import boilerplate.sample.core.util.JwtTokenUtil
+import com.ninjasquad.springmockk.MockkBean
 import io.kotest.core.spec.style.BehaviorSpec
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest
+import org.springframework.data.jpa.mapping.JpaMetamodelMappingContext
 import org.springframework.test.web.servlet.get
 import org.springframework.test.web.servlet.setup.MockMvcBuilders
 import org.springframework.test.web.servlet.setup.StandaloneMockMvcBuilder
 import org.springframework.web.bind.annotation.GetMapping
 import org.springframework.web.bind.annotation.RestController
 
-@WebMvcTest
-class ContextAwareFilterTest : BehaviorSpec({
-    @RestController
-    class TestController {
-        @GetMapping("/test")
-        fun test(): String {
-            return RequestContextStore.get().correlationId
-        }
-    }
 
+@RestController
+class TestController {
+    @GetMapping("/test")
+    fun test(): String {
+        return RequestContextStore.get().correlationId
+    }
+}
+
+@WebMvcTest(TestController::class)
+class ContextAwareFilterTest(
+    @MockkBean private val jpaMetamodelMappingContext: JpaMetamodelMappingContext,
+    @MockkBean private val jwtTokenUtil: JwtTokenUtil,
+) : BehaviorSpec({
     given("ContextAwareFilter") {
         val testController = TestController()
         val contextAwareFilter = ContextAwareFilter()

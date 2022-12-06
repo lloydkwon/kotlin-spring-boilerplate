@@ -1,13 +1,10 @@
 package boilerplate.sample.core.filter.context
 
-import boilerplate.sample.core.filter.context.RequestContext
-import boilerplate.sample.core.filter.context.RequestContextStore
 import io.kotest.core.spec.style.BehaviorSpec
 import io.kotest.matchers.shouldBe
 import io.kotest.matchers.shouldNotBe
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest
-import java.lang.RuntimeException
 
 @WebMvcTest
 @AutoConfigureMockMvc

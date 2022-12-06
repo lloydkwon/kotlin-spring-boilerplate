@@ -25,6 +25,9 @@ repositories {
 	mavenCentral()
 }
 
+val asciidoctorExt: Configuration by configurations.creating
+val snippetsDir by extra { file("build/generated-snippets") }
+
 dependencies {
 	implementation("com.fasterxml.jackson.module:jackson-module-kotlin")
 	implementation("com.querydsl:querydsl-jpa:5.0.0:jakarta")
@@ -51,38 +54,44 @@ dependencies {
 	testImplementation("io.mockk:mockk:1.13.3")
 	testImplementation("org.springframework.boot:spring-boot-starter-test")
 	testImplementation("org.springframework.restdocs:spring-restdocs-mockmvc")
+	asciidoctorExt("org.springframework.restdocs:spring-restdocs-asciidoctor")
 }
 
-val snippetsDir by extra { file("build/generated-snippets") }
-
-tasks.withType<KotlinCompile> {
-	kotlinOptions {
-		freeCompilerArgs = listOf("-Xjsr305=strict")
-		jvmTarget = "17"
+tasks {
+	withType<KotlinCompile> {
+		kotlinOptions {
+			freeCompilerArgs = listOf("-Xjsr305=strict")
+			jvmTarget = "17"
+		}
 	}
-}
 
-tasks.withType<Test> {
-	useJUnitPlatform()
-	jvmArgs("--add-opens", "java.base/java.lang.reflect=ALL-UNNAMED")
-	outputs.dir(snippetsDir)
-}
+	withType<Test> {
+		useJUnitPlatform()
+		jvmArgs("--add-opens", "java.base/java.lang.reflect=ALL-UNNAMED")
+		outputs.dir(snippetsDir)
+	}
 
-tasks.asciidoctor {
-	inputs.dir(snippetsDir)
-	dependsOn(tasks.test)
-}
-tasks.register("copyHTML", Copy::class) {
-	dependsOn(tasks.findByName("asciidoctor"))
-	from(file("build/docs/asciidoc"))
-	into(file("src/main/resources/static/docs"))
-}
+	asciidoctor {
+		inputs.dir(snippetsDir)
+		configurations("asciidoctorExt")
+		dependsOn(test)
+		baseDirFollowsSourceFile()
+	}
 
-tasks.bootJar {
-	dependsOn(tasks.asciidoctor)
-	dependsOn(tasks.getByName("copyHTML"))
-}
+	test {
+		useJUnitPlatform()
+		outputs.dir(snippetsDir)
+	}
 
-tasks.build {
-	dependsOn(tasks.asciidoctor)
+	register<Copy>("copyDocs") {
+		dependsOn(asciidoctor)
+		from("${asciidoctor.get().outputDir}/index.html")
+		into("src/main/resources/static/docs")
+	}
+	bootJar {
+		dependsOn(asciidoctor)
+		from("${asciidoctor.get().outputDir}/index.html") {
+			into("static/docs")
+		}
+	}
 }
