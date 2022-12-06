@@ -1,0 +1,9 @@
+:doctype: book
+:source-highlighter: highlightjs
+:toc: left
+:toclevels: 1
+:sectlinks:
+
+== Kotlin Spring boilerplate
+
+include::user.adoc[]

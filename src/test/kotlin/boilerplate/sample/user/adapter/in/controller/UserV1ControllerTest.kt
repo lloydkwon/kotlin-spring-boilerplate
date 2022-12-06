@@ -12,6 +12,7 @@ import io.mockk.every
 import org.junit.jupiter.api.Test
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest
 import org.springframework.restdocs.mockmvc.MockMvcRestDocumentation.document
+import org.springframework.restdocs.payload.PayloadDocumentation.*
 import org.springframework.test.web.servlet.get
 import org.springframework.test.web.servlet.post
 
@@ -36,7 +37,9 @@ class UserV1ControllerTest : RestControllerTest() {
                 jsonResponse(response)
             }
             .andDo {
-                handle(document("GET /api/v1/users/{userId}"))
+                handle(
+                    document("user-get")
+                )
             }
     }
 
@@ -56,7 +59,19 @@ class UserV1ControllerTest : RestControllerTest() {
                 jsonResponse(response)
             }
             .andDo {
-                handle(document("POST /api/v1/users"))
+                handle(
+                    document(
+                        "user-post",
+                        requestFields(
+                            fieldWithPath("name").description("이름"),
+                            fieldWithPath("password").description("비밀번호")
+                        ),
+                        responseFields(
+                            fieldWithPath("id").description("ID"),
+                            fieldWithPath("name").description("이름"),
+                        )
+                    )
+                )
             }
     }
 }

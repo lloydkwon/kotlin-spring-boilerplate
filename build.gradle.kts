@@ -29,6 +29,7 @@ val asciidoctorExt: Configuration by configurations.creating
 val snippetsDir by extra { file("build/generated-snippets") }
 
 dependencies {
+	asciidoctorExt("org.springframework.restdocs:spring-restdocs-asciidoctor")
 	implementation("com.fasterxml.jackson.module:jackson-module-kotlin")
 	implementation("com.querydsl:querydsl-jpa:5.0.0:jakarta")
 	implementation("io.github.microutils:kotlin-logging-jvm:3.0.2")
@@ -54,7 +55,6 @@ dependencies {
 	testImplementation("io.mockk:mockk:1.13.3")
 	testImplementation("org.springframework.boot:spring-boot-starter-test")
 	testImplementation("org.springframework.restdocs:spring-restdocs-mockmvc")
-	asciidoctorExt("org.springframework.restdocs:spring-restdocs-asciidoctor")
 }
 
 tasks {
@@ -64,34 +64,27 @@ tasks {
 			jvmTarget = "17"
 		}
 	}
-
 	withType<Test> {
 		useJUnitPlatform()
 		jvmArgs("--add-opens", "java.base/java.lang.reflect=ALL-UNNAMED")
 		outputs.dir(snippetsDir)
 	}
-
 	asciidoctor {
 		inputs.dir(snippetsDir)
 		configurations("asciidoctorExt")
 		dependsOn(test)
 		baseDirFollowsSourceFile()
 	}
-
 	test {
 		useJUnitPlatform()
 		outputs.dir(snippetsDir)
 	}
-
-	register<Copy>("copyDocs") {
+	val copyDocs = register<Copy>("copyDocs") {
 		dependsOn(asciidoctor)
 		from("${asciidoctor.get().outputDir}/index.html")
 		into("src/main/resources/static/docs")
 	}
 	bootJar {
-		dependsOn(asciidoctor)
-		from("${asciidoctor.get().outputDir}/index.html") {
-			into("static/docs")
-		}
+		dependsOn(copyDocs)
 	}
 }
