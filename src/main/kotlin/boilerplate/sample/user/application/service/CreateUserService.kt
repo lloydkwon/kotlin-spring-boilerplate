@@ -19,6 +19,7 @@ class CreateUserService(
     override fun execute(command: CreateUserCommand): User {
         userRepository.findByName(command.name)?.let { throw DuplicateNameException() }
         val user = UserEntity(name = command.name, password = command.password)
+        userRepository.save(user)
         return UserConverter.from(user)
     }
 }

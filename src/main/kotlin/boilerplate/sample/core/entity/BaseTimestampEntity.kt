@@ -16,15 +16,4 @@ abstract class BaseTimestampEntity(
     @Column(name = "updated_at", nullable = false)
     @LastModifiedDate
     var updatedAt: ZonedDateTime = ZonedDateTime.now(),
-) {
-    @PrePersist
-    fun prePersist() {
-        createdAt = ZonedDateTime.now()
-        updatedAt = ZonedDateTime.now()
-    }
-
-    @PreUpdate
-    fun preUpdate() {
-        updatedAt = ZonedDateTime.now()
-    }
-}
+)
