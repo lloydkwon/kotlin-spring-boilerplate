@@ -11,11 +11,10 @@ import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
 
 @Service
+@Transactional
 class CreateUserService(
     private val userRepository: UserRepository,
 ) : CreateUserUseCase {
-
-    @Transactional
     override fun execute(command: CreateUserCommand): User {
         userRepository.findByName(command.name)?.let { throw DuplicateNameException() }
         val user = UserEntity(name = command.name, password = command.password)

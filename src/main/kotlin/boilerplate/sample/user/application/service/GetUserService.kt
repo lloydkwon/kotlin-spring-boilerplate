@@ -8,8 +8,10 @@ import boilerplate.sample.user.domain.model.User
 import boilerplate.sample.user.domain.port.`in`.GetUserUseCase
 import org.springframework.data.repository.findByIdOrNull
 import org.springframework.stereotype.Service
+import org.springframework.transaction.annotation.Transactional
 
 @Service
+@Transactional(readOnly = true)
 class GetUserService(
     private val userRepository: UserRepository,
 ) : GetUserUseCase {
