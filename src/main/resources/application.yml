@@ -6,14 +6,14 @@ spring:
       enabled: always
   datasource:
     writer:
-      jdbc-url: jdbc:postgresql://localhost:5432/test
-      username: hide
-      password: hide
+      jdbc-url: jdbc:postgresql://nas.codegurus.co.kr:5432/strapi
+      username: strapi
+      password: strapi12!@QW
       platform: postgres
     reader:
-      jdbc-url: jdbc:postgresql://localhost:5432/test
-      username: hide
-      password: hide
+      jdbc-url: jdbc:postgresql://nas.codegurus.co.kr:5432/strapi
+      username: strapi
+      password: strapi12!@QW
       platform: postgres
   servlet:
     multipart:
@@ -31,9 +31,9 @@ spring:
           batch_size: 100
         order_inserts: true
         order_updates: true
-  redis:
-    host: localhost
-    port: 6379
+#  redis:
+#    host: localhost
+#    port: 6379
 
 logging:
   level:
@@ -42,3 +42,6 @@ logging:
 jwt:
   secret-key: AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
   algorithm: HS256
+
+server:
+  port: 8082

@@ -17,5 +17,5 @@ class PostEntity(
 
     @Id
     @GeneratedValue
-    val id: Long? = null,
+    val id: Long = 0,
 ) : BaseTimestampEntity()

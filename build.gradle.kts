@@ -29,6 +29,7 @@ val asciidoctorExt: Configuration by configurations.creating
 val snippetsDir by extra { file("build/generated-snippets") }
 
 dependencies {
+//	implementation("org.springframework.boot:spring-boot-starter-actuator")
 	asciidoctorExt("org.springframework.restdocs:spring-restdocs-asciidoctor")
 	implementation("com.fasterxml.jackson.module:jackson-module-kotlin")
 	implementation("com.querydsl:querydsl-jpa:5.0.0:jakarta")
@@ -38,7 +39,7 @@ dependencies {
 	implementation("org.jetbrains.kotlin:kotlin-stdlib-jdk8")
 	implementation("org.slf4j:slf4j-api:2.0.5")
 	implementation("org.springframework.boot:spring-boot-starter-data-jpa")
-	implementation("org.springframework.boot:spring-boot-starter-data-redis")
+//	implementation("org.springframework.boot:spring-boot-starter-data-redis")
 	implementation("org.springframework.boot:spring-boot-starter-validation")
 	implementation("org.springframework.boot:spring-boot-starter-web")
 	kapt("com.querydsl:querydsl-apt:5.0.0:jakarta")

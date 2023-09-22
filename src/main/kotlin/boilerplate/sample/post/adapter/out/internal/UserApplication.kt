@@ -4,7 +4,9 @@ import boilerplate.sample.post.domain.port.out.GetUserOutputPort
 import boilerplate.sample.user.domain.command.GetUserCommand
 import boilerplate.sample.user.domain.model.User
 import boilerplate.sample.user.domain.port.`in`.GetUserUseCase
+import org.springframework.stereotype.Component
 
+@Component
 class UserApplication(
     private val getUserUseCase: GetUserUseCase,
 ) : GetUserOutputPort {

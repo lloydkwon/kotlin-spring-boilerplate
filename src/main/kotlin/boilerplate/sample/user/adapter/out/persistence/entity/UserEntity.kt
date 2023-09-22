@@ -14,5 +14,5 @@ class UserEntity(
 
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE)
-    val id: Long? = null
+    val id: Long = 0
 ) : BaseTimestampEntity()

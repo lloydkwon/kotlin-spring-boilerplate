@@ -1,0 +1,14 @@
+### 직접 JSON 사용
+POST http://localhost:8082/api/v1/users
+Content-Type: application/json
+
+{
+  "name": "testuser",
+  "password": "testpass"
+
+}
+
+
+### GET
+GET http://localhost:8082/api/v1/users/1
+
